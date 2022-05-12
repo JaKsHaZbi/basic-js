@@ -16,10 +16,25 @@ const { NotImplementedError } = require('../extensions/index.js');
 function transform(arr) {
   // throw new NotImplementedError('Not implemented');
   // // remove line with error and write your code here
-  let cloneArr = [...arr]
 
-  
+  if (!Array.isArray(arr)) {
+    throw new Error("'arr' parameter must be an instance of the Array!")
+  }
 
+  let resArr = arr.flatMap((value, index, array) => {
+    if ((array[index - 1] === '--double-next') && (array[index + 1] === '--discard-prev')) return [value]
+    if (array[index - 1] === '--discard-next') return [];
+    if (array[index + 1] === '--discard-prev') return [];
+    if ((array[index - 1] === '--double-next') && (array[index + 1] === '--double-prev')) return [value, value, value]
+    if (array[index - 1] === '--double-next') return [value, value];
+    if (array[index + 1] === '--double-prev') return [value, value];
+
+    if (value.toString().startsWith('--d')) return [];
+
+    return value
+  })
+
+  return resArr
 }
 
 module.exports = {

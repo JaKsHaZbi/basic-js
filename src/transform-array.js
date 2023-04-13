@@ -21,15 +21,15 @@ function transform(arr) {
     throw new Error("'arr' parameter must be an instance of the Array!")
   }
 
-  let resArr = arr.flatMap((value, index, array) => {
-    if ((array[index - 1] === '--double-next') && (array[index + 1] === '--discard-prev')) return [value]
-    if (array[index - 1] === '--discard-next') return [];
-    if (array[index + 1] === '--discard-prev') return [];
-    if ((array[index - 1] === '--double-next') && (array[index + 1] === '--double-prev')) return [value, value, value]
-    if (array[index - 1] === '--double-next') return [value, value];
-    if (array[index + 1] === '--double-prev') return [value, value];
+  let resArr = arr.flatMap((value, index) => {
+    if (arr[index - 1] === '--discard-next') return [] 
+    if (arr[index - 1] === '--double-next' &&  arr[index + 1] === '--discard-prev') return [value]
+    if (arr[index + 1] === '--discard-prev') return []
+    if (arr[index - 1] === '--double-next' &&  arr[index + 1] === '--double-prev') return [value, value, value]
+    if (arr[index - 1] === '--double-next') return [value, value]
+    if (arr[index + 1] === '--double-prev') return [value, value]
 
-    if (value.toString().startsWith('--d')) return [];
+    if (value.toString().startsWith('--discard')||value.toString().startsWith('--double')) return []
 
     return value
   })
